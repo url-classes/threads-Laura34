@@ -5,17 +5,26 @@
  */
 package main;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author migu_
  */
 public class frmMain extends javax.swing.JFrame {
 
-    /**
-     * Creates new form frmMain
-     */
+    Hilo hiloNum = new Hilo();
+    Hilo hiloLet = new Hilo();
+        
     public frmMain() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        hiloLet.ventana = 2;
+        hiloNum.ventana = 1;
+        hiloNum.start();
+        hiloLet.start();
+        
     }
 
     /**
@@ -94,12 +103,57 @@ public class frmMain extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    public class Hilo extends Thread{
+        int ventana;
+        String letras = "abcdefghijklmnopqrstuvwxyz";
+        private boolean run = false;
+         
+         public void startRunning(){
+            run = true;
+        }
+        public void stopRunning(){
+            run = false;
+        }
+        
+        public void run(){
+            while (ventana == 1) {  
+                lblNumero1.setText(lblNumero1.getText());
+                while (run) {                    
+                    for (int i = 0; i < 10; i++) {
+                        lblNumero1.setText(i+"");
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            }
+            while (ventana==2) {
+                lblLetra.setText(lblLetra.getText());
+                while (run) {                    
+                    for (int i = 0; i < letras.length(); i++) {
+                        lblLetra.setText(letras.charAt(i)+"");
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     private void btnIniciarNumeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarNumeroActionPerformed
         // TODO add your handling code here:
+        hiloNum.startRunning();
     }//GEN-LAST:event_btnIniciarNumeroActionPerformed
 
     private void btnIniciarLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarLetraActionPerformed
         // TODO add your handling code here:
+        hiloLet.startRunning();
     }//GEN-LAST:event_btnIniciarLetraActionPerformed
 
     /**
